@@ -34,8 +34,8 @@ suite("Unit Tests", function () {
       const callGetNumMethod2 = () => {
         convertHandler.getNum("3/2/3k");
       };
-      assert.throws(callGetNumMethod1, "invalid num");
-      assert.throws(callGetNumMethod2, "invalid num and unit");
+      assert.throws(callGetNumMethod1, "invalid number");
+      assert.throws(callGetNumMethod2, "invalid number and unit");
     });
     // #6
     test("convertHandler should correctly default to a numerical input of 1 when no numerical input is provided.", function () {
@@ -58,7 +58,7 @@ suite("Unit Tests", function () {
       const callGetUnitMethod2 = () => {
         convertHandler.getNum("3/2g");
       };
-      assert.throws(callGetUnitMethod1, "invalid num and unit");
+      assert.throws(callGetUnitMethod1, "invalid number and unit");
       assert.throws(callGetUnitMethod2, "invalid unit");
     });
     // #9
@@ -81,51 +81,27 @@ suite("Unit Tests", function () {
     });
     // #11
     test("convertHandler should correctly convert gal to L.", function () {
-      assert.approximately(
-        Number(convertHandler.convert(20, "gal")),
-        75.7082,
-        0.0005
-      );
+      assert.approximately(convertHandler.convert(20, "gal"), 75.7082, 0.0005);
     });
     // #12
     test("convertHandler should correctly convert L to gal.", function () {
-      assert.approximately(
-        Number(convertHandler.convert(75.7082, "L")),
-        20,
-        0.0005
-      );
+      assert.approximately(convertHandler.convert(75.7082, "L"), 20, 0.0005);
     });
     // #13
     test("convertHandler should correctly convert mi to km.", function () {
-      assert.approximately(
-        Number(convertHandler.convert(100, "mi")),
-        160.934,
-        0.0005
-      );
+      assert.approximately(convertHandler.convert(100, "mi"), 160.934, 0.0005);
     });
     // #14
     test("convertHandler should correctly convert km to mi.", function () {
-      assert.approximately(
-        Number(convertHandler.convert(160.934, "km")),
-        100,
-        0.0005
-      );
+      assert.approximately(convertHandler.convert(160.934, "km"), 100, 0.0005);
     });
     // #15
     test("convertHandler should correctly convert lbs to kg.", function () {
-      assert.approximately(
-        Number(convertHandler.convert(200, "lbs")),
-        90.7185,
-        0.0005
-      );
+      assert.approximately(convertHandler.convert(200, "lbs"), 90.7185, 0.0005);
     });
     // #16
     test("convertHandler should correctly convert kg to lbs.", function () {
-      assert.approximately(
-        Number(convertHandler.convert(90.7185, "kg")),
-        200,
-        0.0005
-      );
+      assert.approximately(convertHandler.convert(90.7185, "kg"), 200, 0.0005);
     });
   });
 });

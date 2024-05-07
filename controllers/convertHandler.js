@@ -22,7 +22,7 @@ function ConvertHandler() {
     let result, num, unit;
     let match = input.match(inputRgx);
 
-    if (!match) throw new Error("invalid num and unit");
+    if (!match) throw new Error("invalid number and unit");
     // console.log(match);
     num = match[1] || "1";
     num = num.split("/");
@@ -32,9 +32,9 @@ function ConvertHandler() {
     unit = unit.match(unitRgx);
 
     if (!unit || num.length > 2) {
-      if (!unit && num.length > 2) throw new Error("invalid num and unit");
+      if (!unit && num.length > 2) throw new Error("invalid number and unit");
       else if (!unit) throw new Error("invalid unit");
-      else throw new Error("invalid num");
+      else throw new Error("invalid number");
     }
 
     if (num.length == 1) result = Number(num[0]);
@@ -66,17 +66,17 @@ function ConvertHandler() {
 
     switch (initUnit) {
       case "gal":
-        return (initNum * galToL).toFixed(5);
+        return Number((initNum * galToL).toFixed(5));
       case "L":
-        return (initNum / galToL).toFixed(5);
+        return Number((initNum / galToL).toFixed(5));
       case "lbs":
-        return (initNum * lbsToKg).toFixed(5);
+        return Number((initNum * lbsToKg).toFixed(5));
       case "kg":
-        return (initNum / lbsToKg).toFixed(5);
+        return Number((initNum / lbsToKg).toFixed(5));
       case "mi":
-        return (initNum * miToKm).toFixed(5);
+        return Number((initNum * miToKm).toFixed(5));
       case "km":
-        return (initNum / miToKm).toFixed(5);
+        return Number((initNum / miToKm).toFixed(5));
     }
   };
 
