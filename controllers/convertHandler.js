@@ -1,6 +1,8 @@
 function ConvertHandler() {
-  let inputRgx = /^(\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)*)?([A-Za-z]+)?$/;
+  let inputRgx = /^([0-9\/\.]*)?([A-Za-z]+)?$/;
+
   let unitRgx = /^(gal|L|mi|km|lbs|kg)$/i;
+  let numRgx = /^(\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)*)$/;
   let units = {
     gal: "L",
     L: "gal",
@@ -25,18 +27,20 @@ function ConvertHandler() {
     if (!match) throw new Error("invalid number and unit");
     // console.log(match);
     num = match[1] || "1";
-    num = num.split("/");
-    // console.log("num: ", num);
+    num = num.match(numRgx)[0] || null;
+
+    // numSplit = num.split("/");
+    console.log("num: ", num);
 
     unit = match[2] || "";
     unit = unit.match(unitRgx);
 
-    if (!unit || num.length > 2) {
-      if (!unit && num.length > 2) throw new Error("invalid number and unit");
-      else if (!unit) throw new Error("invalid unit");
-      else throw new Error("invalid number");
-    }
+    if (!unit && (!num || num.split("/").length > 2))
+      throw new Error("invalid number and unit");
+    if (!unit) throw new Error("invalid unit");
+    if (!num || num.split("/").length > 2) throw new Error("invalid number");
 
+    num = num.split("/");
     if (num.length == 1) result = Number(num[0]);
     else result = Number(num[0]) / Number(num[1]);
 
