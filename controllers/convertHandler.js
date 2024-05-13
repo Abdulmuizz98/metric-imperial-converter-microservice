@@ -1,8 +1,9 @@
 function ConvertHandler() {
-  let inputRgx = /^([0-9\/\.]*)?([A-Za-z]+)?$/;
+  // let inputRgx = /^([0-9\/\.]*)?([A-Za-z]+)?$/;
+  let inputRgx = /^(\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?|)(gal|L|mi|km|lbs|kg)$/i;
+  let numRgx = /^(\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?|)[a-z]*$/i;
+  let unitRgx = /(gal|L|mi|km|lbs|kg)$/i;
 
-  let unitRgx = /^(gal|L|mi|km|lbs|kg)$/i;
-  let numRgx = /^(\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)*)$/;
   let units = {
     gal: "L",
     L: "gal",
@@ -22,23 +23,31 @@ function ConvertHandler() {
 
   this.getNum = function (input) {
     let result, num, unit;
-    let match = input.match(inputRgx);
+    let inputMatch = input.match(inputRgx);
+    let numMatch = input.match(numRgx);
+    let unitMatch = input.match(unitRgx);
 
-    if (!match) throw new Error("invalid number and unit");
+    if (!inputMatch) {
+      //Either num or unit is invalid or both
+      if (!unitMatch && !numMatch) throw new Error("invalid number and unit");
+      else if (!unitMatch) throw new Error("invalid unit");
+      else if (!numMatch) throw new Error("invalid number");
+      else throw new Error("invalid number and unit");
+    }
     // console.log(match);
-    num = match[1] || "1";
-    num = num.match(numRgx)[0] || null;
+    num = inputMatch[1] || "1";
+    // num = num.match(numRgx)[0] || null;
 
     // numSplit = num.split("/");
-    console.log("num: ", num);
+    // console.log("num: ", num);
 
-    unit = match[2] || "";
-    unit = unit.match(unitRgx);
+    unit = inputMatch[2];
+    // unit = unit.match(unitRgx);
 
-    if (!unit && (!num || num.split("/").length > 2))
-      throw new Error("invalid number and unit");
-    if (!unit) throw new Error("invalid unit");
-    if (!num || num.split("/").length > 2) throw new Error("invalid number");
+    // if (!unit && (!num || num.split("/").length > 2))
+    //   throw new Error("invalid number and unit");
+    // if (!unit) throw new Error("invalid unit");
+    // if (!num || num.split("/").length > 2) throw new Error("invalid number");
 
     num = num.split("/");
     if (num.length == 1) result = Number(num[0]);
@@ -48,11 +57,11 @@ function ConvertHandler() {
   };
 
   this.getUnit = function (input) {
-    let match = input.match(inputRgx);
+    let inputMatch = input.match(inputRgx);
 
-    if ((match[2] === "l") | (match[2] === "L")) return "L";
+    if ((inputMatch[2] === "l") | (inputMatch[2] === "L")) return "L";
 
-    return match[2].toLowerCase();
+    return inputMatch[2].toLowerCase();
   };
 
   this.getReturnUnit = function (initUnit) {
