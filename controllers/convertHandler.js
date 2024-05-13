@@ -22,7 +22,7 @@ function ConvertHandler() {
   };
 
   this.getNum = function (input) {
-    let result, num, unit;
+    let num;
     let inputMatch = input.match(inputRgx);
     let numMatch = input.match(numRgx);
     let unitMatch = input.match(unitRgx);
@@ -34,26 +34,11 @@ function ConvertHandler() {
       else if (!numMatch) throw new Error("invalid number");
       else throw new Error("invalid number and unit");
     }
-    // console.log(match);
+
     num = inputMatch[1] || "1";
-    // num = num.match(numRgx)[0] || null;
-
-    // numSplit = num.split("/");
-    // console.log("num: ", num);
-
-    unit = inputMatch[2];
-    // unit = unit.match(unitRgx);
-
-    // if (!unit && (!num || num.split("/").length > 2))
-    //   throw new Error("invalid number and unit");
-    // if (!unit) throw new Error("invalid unit");
-    // if (!num || num.split("/").length > 2) throw new Error("invalid number");
-
     num = num.split("/");
-    if (num.length == 1) result = Number(num[0]);
-    else result = Number(num[0]) / Number(num[1]);
 
-    return result;
+    return num.length === 1 ? Number(num[0]) : Number(num[0]) / Number(num[1]);
   };
 
   this.getUnit = function (input) {
